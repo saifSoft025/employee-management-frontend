@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function EmployeeForm({
   fetchEmployees,
   editingEmployee,
@@ -32,14 +34,14 @@ function EmployeeForm({
     try {
       if (editingEmployee) {
         await axios.put(
-          `http://localhost:5000/api/employees/${editingEmployee.id}`,
+          `${API_URL}/api/employees/${editingEmployee.id}`,
           formData
         );
 
         setEditingEmployee(null);
       } else {
         await axios.post(
-          "http://localhost:5000/api/employees",
+          `${API_URL}/api/employees`,
           formData
         );
       }
@@ -53,7 +55,7 @@ function EmployeeForm({
 
       fetchEmployees();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
