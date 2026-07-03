@@ -9,6 +9,10 @@ jobs:
   docker:
     runs-on: ubuntu-latest
 
+    env:
+      IMAGE_NAME: saifali3366/employee-management-frontend
+      IMAGE_TAG: ${{ github.run_number }}
+
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v4
@@ -21,8 +25,14 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t saifali3366/employee-management-frontend:latest .
+          docker build \
+            -t $IMAGE_NAME:$IMAGE_TAG \
+            -t $IMAGE_NAME:latest .
 
-      - name: Push Docker Image
+      - name: Push Build Number Tag
         run: |
-          docker push saifali3366/employee-management-frontend:latest
+          docker push $IMAGE_NAME:$IMAGE_TAG
+
+      - name: Push Latest Tag
+        run: |
+          docker push $IMAGE_NAME:latest
