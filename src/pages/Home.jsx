@@ -8,7 +8,7 @@ function Home() {
 
   const fetchEmployees = async () => {
     try {
-      const res = await axios.get("/api/employees");
+      const res = await axios.get("/employees");
       setEmployees(res.data);
     } catch (error) {
       console.log(error);
@@ -21,7 +21,7 @@ function Home() {
 
   const deleteEmployee = async (id) => {
     try {
-      await axios.delete(`/api/employees/${id}`);
+      await axios.delete(`/employees/${id}`);
       fetchEmployees();
     } catch (error) {
       console.log(error);
