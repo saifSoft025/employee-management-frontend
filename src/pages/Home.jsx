@@ -8,10 +8,7 @@ function Home() {
 
   const fetchEmployees = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:5000/api/employees"
-      );
-
+      const res = await axios.get("/api/employees");
       setEmployees(res.data);
     } catch (error) {
       console.log(error);
@@ -24,10 +21,7 @@ function Home() {
 
   const deleteEmployee = async (id) => {
     try {
-      await axios.delete(
-        `http://localhost:5000/api/employees/${id}`
-      );
-
+      await axios.delete(`/api/employees/${id}`);
       fetchEmployees();
     } catch (error) {
       console.log(error);
@@ -64,19 +58,11 @@ function Home() {
               <td>{employee.salary}</td>
 
               <td>
-                <button
-                  onClick={() =>
-                    setEditingEmployee(employee)
-                  }
-                >
+                <button onClick={() => setEditingEmployee(employee)}>
                   Edit
                 </button>
 
-                <button
-                  onClick={() =>
-                    deleteEmployee(employee.id)
-                  }
-                >
+                <button onClick={() => deleteEmployee(employee.id)}>
                   Delete
                 </button>
               </td>
