@@ -8,7 +8,7 @@ function Home() {
 
   const fetchEmployees = async () => {
     try {
-      const res = await axios.get("/employees");
+      const res = await axios.get("/api/employees");
       setEmployees(res.data);
     } catch (error) {
       console.log(error);
