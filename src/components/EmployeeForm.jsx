@@ -34,7 +34,7 @@ function EmployeeForm({
     try {
       if (editingEmployee) {
         await axios.put(
-          `${API_URL}/api/employees/${editingEmployee.id}`,
+          `${API_URL}/employees/${editingEmployee.id}`,
           formData
         );
 
