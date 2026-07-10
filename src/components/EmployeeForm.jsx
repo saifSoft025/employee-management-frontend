@@ -41,7 +41,7 @@ function EmployeeForm({
         setEditingEmployee(null);
       } else {
         await axios.post(
-          `${API_URL}/api/employees`,
+          `${API_URL}/employees`,
           formData
         );
       }
