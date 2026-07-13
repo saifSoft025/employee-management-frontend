@@ -2,16 +2,24 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import EmployeeForm from "../components/EmployeeForm";
 
+const API_URL = import.meta.env.VITE_API_URL || "/api";
+
 function Home() {
   const [employees, setEmployees] = useState([]);
   const [editingEmployee, setEditingEmployee] = useState(null);
 
   const fetchEmployees = async () => {
     try {
-      const res = await axios.get("/api/employees");
-      setEmployees(res.data);
+      const res = await axios.get(`${API_URL}/employees`);
+      const data = Array.isArray(res.data)
+        ? res.data
+        : Array.isArray(res.data?.employees)
+          ? res.data.employees
+          : [];
+      setEmployees(data);
     } catch (error) {
-      console.log(error);
+      console.error("Failed to fetch employees:", error);
+      setEmployees([]);
     }
   };
 
@@ -21,10 +29,10 @@ function Home() {
 
   const deleteEmployee = async (id) => {
     try {
-      await axios.delete(`/employees/${id}`);
+      await axios.delete(`${API_URL}/employees/${id}`);
       fetchEmployees();
     } catch (error) {
-      console.log(error);
+      console.error("Failed to delete employee:", error);
     }
   };
 

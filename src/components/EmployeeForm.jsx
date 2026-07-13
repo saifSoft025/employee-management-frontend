@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL || "/api";
 
 function EmployeeForm({
   fetchEmployees,
@@ -17,7 +17,10 @@ function EmployeeForm({
 
   useEffect(() => {
     if (editingEmployee) {
-      setFormData(editingEmployee);
+      setFormData({
+        ...editingEmployee,
+        salary: editingEmployee.salary?.toString() || "",
+      });
     }
   }, [editingEmployee]);
 
@@ -28,22 +31,41 @@ function EmployeeForm({
     });
   };
 
+  const normalizeSalary = (value) => {
+    if (value === undefined || value === null) {
+      return "";
+    }
+    return value.toString().replace(/,/g, "");
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const salaryValue = normalizeSalary(formData.salary);
+    const salaryNumber = Number(salaryValue);
+
+    if (salaryValue === "" || Number.isNaN(salaryNumber) || !Number.isFinite(salaryNumber)) {
+      console.error("Invalid salary value", formData.salary);
+      return;
+    }
+
+    const payload = {
+      name: formData.name,
+      email: formData.email,
+      designation: formData.designation,
+      salary: parseInt(salaryNumber, 10),
+    };
 
     try {
       if (editingEmployee) {
         await axios.put(
           `${API_URL}/employees/${editingEmployee.id}`,
-          formData
+          payload
         );
 
         setEditingEmployee(null);
       } else {
-        await axios.post(
-          `${API_URL}/employees`,
-          formData
-        );
+        await axios.post(`${API_URL}/employees`, payload);
       }
 
       setFormData({
